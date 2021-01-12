@@ -1,0 +1,20 @@
+/*
+to be continued filling in sample data
+*/
+INSERT INTO VENDORS (FIRST_NAME,LAST_NAME,COMPANY, ROOM_NUMBER, BED_INFO) VALUES ('Piccadilly', 'P1', '1Q');
+
+
+/*
+INSERT INTO ROOM (NAME, ROOM_NUMBER, BED_INFO) VALUES ('Piccadilly', 'P1', '1Q');
+
+
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Adams', 'Roy', 'radams1v@xinhuanet.com', 'United States', '2872 Marquette Street', 'NY', '1-(235)314-9823');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Adams', 'Martin', 'madams2b@msu.edu', 'China', '4 Mandrake Plaza', '', '9-(401)660-9813');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Alvarez', 'Roger', 'ralvarezk@blogs.com', 'United States', '3 Green Plaza', 'FL', '6-(980)036-6105');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Alvarez', 'Anne', 'aalvarez1y@mlb.com', 'United States', '6 Glendale Parkway', 'FL', '7-(967)349-7237');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Alvarez', 'Ann', 'aalvarez20@jalbum.net', 'Afghanistan', '851 Nelson Circle', '', '7-(418)731-2327');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Anderson', 'Betty', 'banderson14@digg.com', 'United States', '3538 Scofield Drive', 'TX', '1-(291)830-0405');
+INSERT INTO GUEST (LAST_NAME, FIRST_NAME, EMAIL_ADDRESS, COUNTRY, ADDRESS, STATE, PHONE_NUMBER) VALUES('Anderson', 'Laura', 'landerson24@icio.us', 'United States', '805 Paget Court', 'NY', '3-(587)240-6409');
+
+INSERT INTO RESERVATION (ROOM_ID, GUEST_ID, RES_DATE) VALUES ((SELECT ROOM_ID FROM ROOM WHERE ROOM_NUMBER = 'C2'), (SELECT GUEST_ID FROM GUEST WHERE LAST_NAME = 'Young'), '2020-01-01');
+*/

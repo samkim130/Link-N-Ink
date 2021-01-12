@@ -4,10 +4,10 @@ Social Media Tattoo App
 Work in progress for a tattoo social media app that connects artists to app users/potential customers
 
 Technologies:
-Spring Boot - backend
-Spring Data & temporary PostgreSQL on local docker machine
-React - frontend (https://github.com/samkim130/linkink-web)
-Amazon S3 - for image uploads
+  Spring Boot - backend
+  Spring Data & temporary PostgreSQL on local docker machine
+  React - frontend (https://github.com/samkim130/linkink-web)
+  Amazon S3 - for image uploads
 
 
 credit to a friend (UX/UI designer student: jaeheegil96@gmail.com) for initial design and ideas

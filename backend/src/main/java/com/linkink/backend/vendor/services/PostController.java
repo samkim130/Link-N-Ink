@@ -17,28 +17,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-class PostForm {
-    private Long vendorId;
-    private MultipartFile file;
-
-    public Long getVendorId() {
-        return vendorId;
-    }
-
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setVendorId(Long vendorId) {
-        this.vendorId = vendorId;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-}
-
 @RestController
+@CrossOrigin()
 @RequestMapping("/api/v1/post")
 public class PostController {
     private final PostService postService;
@@ -51,10 +31,23 @@ public class PostController {
         this.vendorService=vendorService;
         this.imageService=imageService;
     }
-
     @GetMapping
     public ResponseEntity getPosts() {
         List<Post> postList = postService.getPosts();
+        if (postList == null) {
+            //some kind of sql error catch leading here
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(postList);
+
+           }
+    }
+
+    @GetMapping(
+            path="/byVendor/{vendorId}"
+    )
+    public ResponseEntity getPostsByVendorId(@PathVariable("vendorId") Long vendorId) {
+        List<Post> postList = postService.getPostsByVendorId(vendorId);
         if (postList == null) {
             //some kind of sql error catch leading here
             return ResponseEntity.notFound().build();
@@ -65,18 +58,19 @@ public class PostController {
 
 
     @PostMapping(
-            path="/add",
+            path="/{vendorId}/add",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addPost(@RequestBody PostForm postForm) throws URISyntaxException {
-        Vendor postOwner = vendorService.findByProfileId(postForm.getVendorId());
+    public ResponseEntity addPost(@PathVariable("vendorId") Long vendorId,
+                                  @RequestParam("file")MultipartFile file) throws URISyntaxException {
+        Vendor postOwner = vendorService.findByProfileId(vendorId);
         Post createdPost= postService.addPost(postOwner);
         if (postOwner == null) {
             //some kind of sql error catch leading here
             return ResponseEntity.notFound().build();
         } else {
-            Image createdImage=imageService.addPostImage(postOwner,createdPost, postForm.getFile());
+            Image createdImage=imageService.addPostImage(postOwner,createdPost, file);
             ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/api/v1/image/{id}/image/download")
                     .buildAndExpand(createdImage.getImageId());
@@ -84,7 +78,7 @@ public class PostController {
             //will be updated to accept multiple files
             imageList.add(createdImage);
 
-            vendorService.addPostAndImages(postForm.getVendorId(),createdPost, imageList);
+            vendorService.addPostAndImages(vendorId,createdPost, imageList);
             createdPost=postService.addImages(createdPost.getPostId(),createdImage);
 
             URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()

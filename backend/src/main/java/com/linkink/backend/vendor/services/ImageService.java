@@ -42,6 +42,7 @@ public class ImageService {
         Map<String, String> metadata = extractMetadata(file);
         //4. create new Image entity
         Image image= new Image(vendor,post,null);
+        imageRepository.save(image);
 
         //5. store image in s3 & update database (userProfileImageLink) with s3 image link
         String path = String.format("%s/postImages/%s/%s", BucketName.PROFILE_IMAGE.getBucketName(),
@@ -54,6 +55,7 @@ public class ImageService {
             imageRepository.save(image);
             return image;
         } catch ( IOException e){
+            imageRepository.delete(image);
             throw new IllegalStateException(e);
         }
 

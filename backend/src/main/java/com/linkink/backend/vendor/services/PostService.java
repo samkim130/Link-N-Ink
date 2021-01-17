@@ -35,6 +35,13 @@ public class PostService {
         return postList;
     }
 
+    public List<Post> getPostsByVendorId(Long vendorId){
+        Iterable<Post> posts = postRepository.findByVendorProfileId(vendorId);
+        List<Post> postList = new ArrayList<>();
+        posts.forEach(postList::add);
+        return postList;
+    }
+
     public Post findByPostId(Long postId){
         return this.getPostOrThrow(postId);
     }

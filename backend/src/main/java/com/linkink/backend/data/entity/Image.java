@@ -1,5 +1,7 @@
 package com.linkink.backend.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Optional;
 
@@ -10,12 +12,17 @@ public class Image {
     @Column(name="IMAGE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imageId;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @JsonIgnoreProperties({"images", "posts"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PROFILE_ID")
     private Vendor vendor;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @JsonIgnoreProperties({"vendor", "images"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="POST_ID")
     private Post post;
+
     @Column(name="POST_IMAGE_LINK")
     private String postImageLink;
 

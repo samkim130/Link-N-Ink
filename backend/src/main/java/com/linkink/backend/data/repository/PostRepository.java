@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends PagingAndSortingRepository<Post,Long> {
+    Iterable<Post> findByVendorProfileId(long profileId);
 }

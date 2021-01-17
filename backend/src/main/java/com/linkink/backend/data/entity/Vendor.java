@@ -1,5 +1,7 @@
 package com.linkink.backend.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -29,11 +31,13 @@ public class Vendor {
     @Column(name="PROFILE_IMAGE_LINK")
     private String profileLink;
 
+    @JsonIgnoreProperties({"vendor"})
     @OneToMany(mappedBy="vendor",
             fetch=FetchType.EAGER,
             cascade= CascadeType.ALL)
     private Set<Post> posts = new HashSet<>();
 
+    @JsonIgnoreProperties({"vendor"})
     @OneToMany(mappedBy="vendor",
             fetch=FetchType.EAGER,
             cascade= CascadeType.ALL)

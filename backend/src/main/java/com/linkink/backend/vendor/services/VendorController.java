@@ -1,6 +1,8 @@
 package com.linkink.backend.vendor.services;
 
 import com.linkink.backend.data.entity.Vendor;
+import com.linkink.backend.data.projections.VendorView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 public class VendorController {
     private final VendorService vendorService;
 
+    @Autowired
     public VendorController(VendorService vendorService) {
         this.vendorService = vendorService;
     }
@@ -30,6 +33,19 @@ public class VendorController {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(vendorList);
+        }
+    }
+
+    @GetMapping(
+            path="/basicList"
+    )
+    public ResponseEntity getBasicVendorList() {
+        List<VendorView> vendorViewList = vendorService.getBasicVendorList();
+        if (vendorViewList == null) {
+            //some kind of sql error catch leading here
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(vendorViewList);
         }
     }
 

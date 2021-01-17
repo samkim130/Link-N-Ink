@@ -12,4 +12,4 @@ export PGPASSWORD=postgres
 createdb -U postgres -h localhost testDB
 psql -U postgres -d testDB -h localhost -f schema.sql
 #psql -U postgres -d testDB -h localhost -f data.sql
-#psql -U postgres -d testDB -h localhost -f testData.sql
+psql -U postgres -d testDB -h localhost -f testData.sql

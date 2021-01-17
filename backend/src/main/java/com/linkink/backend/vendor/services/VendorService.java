@@ -4,8 +4,7 @@ import com.linkink.backend.data.build.VendorBuilder;
 import com.linkink.backend.data.entity.Image;
 import com.linkink.backend.data.entity.Post;
 import com.linkink.backend.data.entity.Vendor;
-import com.linkink.backend.data.repository.ImageRepository;
-import com.linkink.backend.data.repository.PostRepository;
+import com.linkink.backend.data.projections.VendorView;
 import com.linkink.backend.data.repository.VendorRepository;
 import com.linkink.backend.vendor.bucket.BucketName;
 import com.linkink.backend.vendor.profileimagestore.ProfileImageFileStore;
@@ -28,6 +27,11 @@ public class VendorService {
     public VendorService(VendorRepository vendorRepository,ProfileImageFileStore profileImageFileStore) {
         this.vendorRepository = vendorRepository;
         this.profileImageFileStore = profileImageFileStore;
+    }
+
+
+    public List<VendorView> getBasicVendorList() {
+        return vendorRepository.findAllWithProjection();
     }
 
     public VendorRepository getVendorRepository() {

@@ -1,5 +1,6 @@
 package com.linkink.backend.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -13,15 +14,19 @@ public class Post {
     @Column(name="POST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long postId;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @JsonIgnoreProperties({"posts","images"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PROFILE_ID")
     private Vendor vendor;
+
     @Column(name="POST_DATE", nullable = false, updatable = false, insertable = false)
     @CreationTimestamp
     private LocalDateTime postDate;
     @Column(name="LIKES")
     private int likes;
 
+    @JsonIgnoreProperties({"vendor", "post"})
     @OneToMany(mappedBy="post",
             fetch=FetchType.EAGER,
             cascade= CascadeType.ALL)

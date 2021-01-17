@@ -35,7 +35,7 @@ public class ImageController {
     }
 
     @GetMapping(
-            path="/{imageId}/image/download"
+            path="/{imageId}/download"
     )
     public ResponseEntity downloadPostImage(@PathVariable("imageId")Long imageId) throws URISyntaxException {
         return ResponseEntity.ok(imageService.downloadPostImage(imageId));

@@ -61,6 +61,7 @@ public class VendorService {
                 .setEmailAddress(newVendor.getEmailAddress())
                 .setAddress(newVendor.getAddress())
                 .setCountry(newVendor.getCountry())
+                .setCity(newVendor.getCity())
                 .setState(newVendor.getState())
                 .setPhoneNumber(newVendor.getPhoneNumber())
                 .buildVendor();
@@ -76,14 +77,18 @@ public class VendorService {
 
     public void deleteVendor(Long vendorId) {
         String path = String.format("profileImages/%s", vendorId);
-        profileImageFileStore.removeProfile(path);
+        profileImageFileStore.removeImage(path);
         vendorRepository.deleteById(vendorId);
-
     }
 
     public Vendor addPostAndImages(Long vendorId, Post createdPost, List<Image> imageList) {
         Vendor vendor = getVendorOrThrow(vendorId);
         vendor.getPosts().add(createdPost);
+        imageList.forEach(vendor.getImages()::add);
+        return vendorRepository.save(vendor);
+    }
+    public Vendor addImages(Long vendorId, List<Image> imageList) {
+        Vendor vendor = getVendorOrThrow(vendorId);
         imageList.forEach(vendor.getImages()::add);
         return vendorRepository.save(vendor);
     }

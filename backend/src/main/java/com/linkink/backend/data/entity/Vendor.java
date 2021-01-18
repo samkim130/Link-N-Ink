@@ -22,6 +22,8 @@ public class Vendor {
     private String emailAddress;
     @Column(name="ADDRESS")
     private String address;
+    @Column(name="CITY")
+    private String city;
     @Column(name="COUNTRY")
     private String country;
     @Column(name="STATE")
@@ -33,26 +35,28 @@ public class Vendor {
 
     @JsonIgnoreProperties({"vendor"})
     @OneToMany(mappedBy="vendor",
-            fetch=FetchType.EAGER,
-            cascade= CascadeType.ALL)
+            fetch=FetchType.LAZY,
+            cascade= CascadeType.ALL,orphanRemoval=true)
     private Set<Post> posts = new HashSet<>();
 
     @JsonIgnoreProperties({"vendor"})
     @OneToMany(mappedBy="vendor",
-            fetch=FetchType.EAGER,
-            cascade= CascadeType.ALL)
+            fetch=FetchType.LAZY,
+            cascade= CascadeType.ALL,
+            orphanRemoval=true)
     @OrderColumn(name = "IMAGE_ID")
     private Set<Image> images = new HashSet<>();
 
     protected Vendor() {
     }
 
-    public Vendor(String firstName, String lastName, String company, String emailAddress, String address, String country, String state, String phoneNumber, String profileLink) {
+    public Vendor(String firstName, String lastName, String company, String emailAddress, String address,String city, String country, String state, String phoneNumber, String profileLink) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.company = company;
         this.emailAddress = emailAddress;
         this.address = address;
+        this.city=city;
         this.country = country;
         this.state = state;
         this.phoneNumber = phoneNumber;
@@ -146,5 +150,13 @@ public class Vendor {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

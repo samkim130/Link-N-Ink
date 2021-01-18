@@ -17,10 +17,10 @@ public class VendorServiceTests {
 
     @Test
     public void testVendorServices(){
-        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_D= new Vendor("hij", "HIJ", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
+        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_D= new Vendor("hij", "HIJ", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
 
         vendorService.addVendor(vendor_A);
         vendorService.addVendor(vendor_B);

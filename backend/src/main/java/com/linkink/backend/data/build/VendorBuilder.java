@@ -11,6 +11,7 @@ public class VendorBuilder {
     private String emailAddress;
     private String address;
     private String country;
+    private String city;
     private String state;
     private String phoneNumber;
     private String profileLink;
@@ -50,6 +51,11 @@ public class VendorBuilder {
         return this;
     }
 
+    public VendorBuilder setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
     public VendorBuilder setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
@@ -62,6 +68,6 @@ public class VendorBuilder {
     }
 
     public Vendor buildVendor(){
-        return new Vendor(firstName,lastName,company,emailAddress,address,country,state,phoneNumber,profileLink);
+        return new Vendor(firstName,lastName,company,emailAddress,address,city,country,state,phoneNumber,profileLink);
     }
 }

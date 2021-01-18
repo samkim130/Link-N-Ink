@@ -68,7 +68,7 @@ public class ProfileImageFileStore {
         }
     }
 
-    public void removeProfile(String path){
+    public void removeImage(String path){
 
         ListObjectsRequest listObjectsRequest =
                 new ListObjectsRequest()

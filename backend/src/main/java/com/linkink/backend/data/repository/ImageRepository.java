@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository extends PagingAndSortingRepository<Image,Long> {
+    long deleteByPostPostId(long postId);
+    long deleteByVendorProfileId(long profileId);
 }

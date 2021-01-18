@@ -31,6 +31,7 @@ public class PostController {
         this.vendorService=vendorService;
         this.imageService=imageService;
     }
+
     @GetMapping
     public ResponseEntity getPosts() {
         List<Post> postList = postService.getPosts();
@@ -72,7 +73,7 @@ public class PostController {
         } else {
             Image createdImage=imageService.addPostImage(postOwner,createdPost, file);
             ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/api/v1/image/{id}/image/download")
+                    .path("/api/v1/image/{id}/download")
                     .buildAndExpand(createdImage.getImageId());
             List<Image> imageList = new ArrayList<>();
             //will be updated to accept multiple files
@@ -92,6 +93,34 @@ public class PostController {
         }
     }
 
+    @PutMapping(
+            path="/{postId}/add",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity addImagesToPost(@PathVariable("postId") Long postId,
+                                  @RequestParam("file")MultipartFile file) throws URISyntaxException {
+        Post orgPost = postService.findByPostId(postId);
+        Vendor vendor = orgPost.getVendor();
+        if (orgPost == null) {
+            //some kind of sql error catch leading here
+            return ResponseEntity.notFound().build();
+        } else {
+            Image createdImage=imageService.addPostImage(vendor,orgPost, file);
+            ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/v1/image/{id}/download")
+                    .buildAndExpand(createdImage.getImageId());
+            List<Image> imageList = new ArrayList<>();
+            //will be updated to accept multiple files
+            imageList.add(createdImage);
+
+            vendorService.addImages(vendor.getProfileId(), imageList);
+            orgPost=postService.addImages(orgPost.getPostId(),createdImage);
+
+            return ResponseEntity.ok(orgPost);
+        }
+    }
+
     @GetMapping(
             path="/{postId}"
     )
@@ -104,4 +133,14 @@ public class PostController {
             return ResponseEntity.ok(foundPost);
         }
     }
+
+    @DeleteMapping(
+            path="/{postId}/remove"
+    )
+    public ResponseEntity removeVendor(@PathVariable("postId") Long postId){
+        long removedImages=imageService.deleteByPostId(postId);
+        postService.deletePost(postId);
+        return ResponseEntity.ok(removedImages);
+    }
+
 }

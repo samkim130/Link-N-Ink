@@ -46,10 +46,10 @@ public class VendorControllerUnitTests {
 
     @Test
     public void unitTestExample() throws Exception {
-        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_D= new Vendor("hij", "HIJ", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
+        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_D= new Vendor("hij", "HIJ", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
 
         when(vendorService.addVendor(any(Vendor.class))).thenReturn(vendor_A);
 

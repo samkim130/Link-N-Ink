@@ -14,12 +14,12 @@ public class Image {
     private long imageId;
 
     @JsonIgnoreProperties({"images", "posts"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="PROFILE_ID")
     private Vendor vendor;
 
     @JsonIgnoreProperties({"vendor", "images"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="POST_ID")
     private Post post;
 

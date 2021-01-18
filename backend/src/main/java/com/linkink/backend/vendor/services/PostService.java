@@ -22,10 +22,12 @@ import static org.apache.http.entity.ContentType.IMAGE_SVG;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final ProfileImageFileStore profileImageFileStore;
 
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, ProfileImageFileStore profileImageFileStore) {
         this.postRepository = postRepository;
+        this.profileImageFileStore = profileImageFileStore;
     }
 
     public List<Post> getPosts(){
@@ -67,5 +69,19 @@ public class PostService {
     private Post getPostOrThrow(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalStateException(String.format("User post %s not found", postId)));
+    }
+
+    public void deletePost(Long postId) {
+        String path = String.format("postImages/%s", postId);
+        profileImageFileStore.removeImage(path);
+        postRepository.deleteById(postId);
+        //delete Image data and also from Vendor list
+    }
+
+    public void deleteByVendorId(Long vendorId) {
+        Iterable<Post> posts = postRepository.findByVendorProfileId(vendorId);
+        List<Long> postIdList=new ArrayList<>();
+        posts.forEach(post -> postIdList.add(post.getPostId()));
+        postIdList.forEach(this::deletePost);
     }
 }

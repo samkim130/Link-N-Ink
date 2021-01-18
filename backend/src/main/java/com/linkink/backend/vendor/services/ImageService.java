@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
 
@@ -98,5 +99,15 @@ public class ImageService {
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         return metadata;
+    }
+
+    @Transactional
+    public long deleteByPostId(Long postId) {
+        return imageRepository.deleteByPostPostId(postId);
+    }
+
+    @Transactional
+    public long deleteByVendorId(Long vendorId) {
+        return imageRepository.deleteByVendorProfileId(vendorId);
     }
 }

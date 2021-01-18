@@ -37,9 +37,9 @@ public class EntityRepositoryTests {
 
     @Test
     public void testJPAtest(){
-        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
-        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street", "USA", "NJ","999-999-9999", null);
+        Vendor vendor_A= new Vendor("abc", "ABC", "company", "whatever@com", "AB Street", "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_B= new Vendor("cdf", "CDF", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
+        Vendor vendor_C= new Vendor("efg", "EFG", "company", "whatever@com", "AB Street",  "Tenafly", "USA","NJ","999-999-9999", null);
         entityManager.persist(vendor_A);
         entityManager.persist(vendor_B);
         entityManager.persist(vendor_C);

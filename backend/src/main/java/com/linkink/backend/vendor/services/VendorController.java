@@ -3,7 +3,6 @@ package com.linkink.backend.vendor.services;
 import com.linkink.backend.data.entity.Vendor;
 import com.linkink.backend.data.projections.VendorView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +18,14 @@ import java.util.List;
 @RequestMapping("/api/v1/vendor")
 public class VendorController {
     private final VendorService vendorService;
+    private final PostService postService;
+    private final ImageService imageService;
 
     @Autowired
-    public VendorController(VendorService vendorService) {
+    public VendorController(VendorService vendorService, PostService postService, ImageService imageService) {
         this.vendorService = vendorService;
+        this.postService = postService;
+        this.imageService = imageService;
     }
 
     @GetMapping
@@ -94,6 +97,8 @@ public class VendorController {
             path="/{vendorId}/remove"
     )
     public ResponseEntity removeVendor(@PathVariable("vendorId") Long vendorId){
+        imageService.deleteByVendorId(vendorId);
+        postService.deleteByVendorId(vendorId);
         vendorService.deleteVendor(vendorId);
         return ResponseEntity.ok().build();
     }

@@ -16,7 +16,7 @@ public class Post {
     private long postId;
 
     @JsonIgnoreProperties({"posts","images"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="PROFILE_ID")
     private Vendor vendor;
 
@@ -28,8 +28,9 @@ public class Post {
 
     @JsonIgnoreProperties({"vendor", "post"})
     @OneToMany(mappedBy="post",
-            fetch=FetchType.EAGER,
-            cascade= CascadeType.ALL)
+            fetch=FetchType.LAZY,
+            cascade= CascadeType.ALL,
+            orphanRemoval=true)
     private Set<Image> images = new HashSet<>();
 
     protected Post() {

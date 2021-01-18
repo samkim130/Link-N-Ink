@@ -72,7 +72,21 @@ public class VendorService {
         Vendor originalVendor=this.getVendorOrThrow(vendorId);
         if(originalVendor.getProfileId()!= updatedVendor.getProfileId())
             throw new IllegalStateException(String.format("Vendor Id %s does not match the record in the Requested Body", vendorId));
-        return vendorRepository.save(updatedVendor);
+        updateWithSetters(updatedVendor, originalVendor);
+        return vendorRepository.save(originalVendor);
+    }
+
+    private void updateWithSetters(Vendor updatedVendor, Vendor originalVendor) {
+        originalVendor.setFirstName(updatedVendor.getFirstName());
+        originalVendor.setLastName(updatedVendor.getLastName());
+        originalVendor.setCompany(updatedVendor.getCompany());
+        originalVendor.setEmailAddress(updatedVendor.getEmailAddress());
+        originalVendor.setAddress(updatedVendor.getAddress());
+        originalVendor.setCountry(updatedVendor.getCountry());
+        originalVendor.setCity(updatedVendor.getCity());
+        originalVendor.setState(updatedVendor.getState());
+        originalVendor.setPhoneNumber(updatedVendor.getPhoneNumber());
+        updatedVendor.getProfileLink().ifPresent(originalVendor::setProfileLink);
     }
 
     public void deleteVendor(Long vendorId) {

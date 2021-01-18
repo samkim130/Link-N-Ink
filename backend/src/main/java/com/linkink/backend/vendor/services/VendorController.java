@@ -33,7 +33,7 @@ public class VendorController {
             path="/adminAccess/{password}"
     )
     public ResponseEntity checkAdmin(@PathVariable("password") String password) {
-        return ResponseEntity.ok(Encryption.checkAccess(password));
+        return ResponseEntity.ok(new Encryption().checkAccess(password));
     }
 
     @GetMapping

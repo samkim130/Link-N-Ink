@@ -1,6 +1,8 @@
 package com.linkink.backend.vendor.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -19,11 +21,11 @@ public class Encryption {
     private static final SecureRandom RAND = new SecureRandom();
 
     @Value("${myAdminProperties.hashedPass}")
-    private static String adminKey;
+    private String adminKey;
     @Value("${myAdminProperties.salt}")
-    private static String adminSalt;
+    private String adminSalt;
 
-    public static boolean checkAccess(String password){
+    public boolean checkAccess(String password){
         String generatedHash = hashPassword(password,adminSalt).get();
         return adminKey.equals(generatedHash);
     }

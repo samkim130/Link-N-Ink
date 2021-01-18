@@ -19,16 +19,13 @@ public class Encryption {
     private static final SecureRandom RAND = new SecureRandom();
 
     @Value("${myAdminProperties.hashedPass}")
-    private String adminKey;
+    private static String adminKey;
     @Value("${myAdminProperties.salt}")
-    private String adminSalt;
+    private static String adminSalt;
 
     public static boolean checkAccess(String password){
-        String salt= generateSalt(8).get();
-        String generatedHash = hashPassword(password,salt).get();
-        System.out.println(salt);
-        System.out.println(generatedHash);
-        return true;
+        String generatedHash = hashPassword(password,adminSalt).get();
+        return adminKey.equals(generatedHash);
     }
 
     public static Optional<String> generateSalt (final int length) {

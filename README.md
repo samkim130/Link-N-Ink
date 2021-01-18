@@ -15,6 +15,7 @@ https://linkink-web.herokuapp.com/
 
 ### Things to note:
 temporary Admin access page on the app (https://linkink-web.herokuapp.com/) - requires correct passcode to match the hash
+
 ~~to use your own Amazon S3 features, create your own account and save the info in a "cred.txt" in the folder where AmazonS3Config.java is located \
 also start a local database on docker using `sh start_postgres.sh` in the bin folder~~
 

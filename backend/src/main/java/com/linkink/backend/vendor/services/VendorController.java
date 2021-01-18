@@ -21,19 +21,21 @@ public class VendorController {
     private final VendorService vendorService;
     private final PostService postService;
     private final ImageService imageService;
+    private final Encryption encryption;
 
     @Autowired
-    public VendorController(VendorService vendorService, PostService postService, ImageService imageService) {
+    public VendorController(VendorService vendorService, PostService postService, ImageService imageService,Encryption encryption) {
         this.vendorService = vendorService;
         this.postService = postService;
         this.imageService = imageService;
+        this.encryption=encryption;
     }
 
     @GetMapping(
             path="/adminAccess/{password}"
     )
     public ResponseEntity checkAdmin(@PathVariable("password") String password) {
-        return ResponseEntity.ok(new Encryption().checkAccess(password));
+        return ResponseEntity.ok(encryption.checkAccess(password));
     }
 
     @GetMapping

@@ -4,6 +4,7 @@ import com.linkink.backend.data.entity.Vendor;
 import com.linkink.backend.data.projections.VendorView;
 import com.linkink.backend.vendor.config.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,9 +77,11 @@ public class VendorController {
     }
 
     @PostMapping(
-            path="/add"
+            path="/add/wAdmin/{password}"
     )
-    public ResponseEntity addVendor(@RequestBody Vendor newVendor) throws URISyntaxException {
+    public ResponseEntity addVendor(@PathVariable("password") String password, @RequestBody Vendor newVendor) throws URISyntaxException {
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Long createdId= vendorService.addVendor(newVendor).getProfileId();
         if (createdId == null) {
             //some kind of sql error catch leading here
@@ -96,17 +99,21 @@ public class VendorController {
     }
 
     @PutMapping(
-            path="/{vendorId}/update"
+            path="/{vendorId}/update/wAdmin/{password}"
     )
-    public ResponseEntity updateVendorInformation(@PathVariable("vendorId") Long vendorId, @RequestBody Vendor updatedVendor){
+    public ResponseEntity updateVendorInformation(@PathVariable("password") String password,@PathVariable("vendorId") Long vendorId, @RequestBody Vendor updatedVendor){
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Vendor savedUpdate = vendorService.updateVendorInformation(vendorId, updatedVendor);
         return ResponseEntity.ok(savedUpdate);
     }
 
     @DeleteMapping(
-            path="/{vendorId}/remove"
+            path="/{vendorId}/remove/wAdmin/{password}"
     )
-    public ResponseEntity removeVendor(@PathVariable("vendorId") Long vendorId){
+    public ResponseEntity removeVendor(@PathVariable("password") String password,@PathVariable("vendorId") Long vendorId){
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         imageService.deleteByVendorId(vendorId);
         postService.deleteByVendorId(vendorId);
         vendorService.deleteVendor(vendorId);
@@ -114,12 +121,14 @@ public class VendorController {
     }
 
     @PostMapping(
-            path="/{vendorId}/image/upload",
+            path="/{vendorId}/image/upload/wAdmin/{password}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity uploadVendorProfileImage(@PathVariable("vendorId") Long vendorId,
+    public ResponseEntity uploadVendorProfileImage(@PathVariable("password") String password,@PathVariable("vendorId") Long vendorId,
                                          @RequestParam("file")MultipartFile file){
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         vendorService.uploadVendorProfileImage(vendorId, file);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/vendor/{id}/image/download")

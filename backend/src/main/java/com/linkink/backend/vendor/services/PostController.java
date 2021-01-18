@@ -4,6 +4,7 @@ package com.linkink.backend.vendor.services;
 import com.linkink.backend.data.entity.Image;
 import com.linkink.backend.data.entity.Post;
 import com.linkink.backend.data.entity.Vendor;
+import com.linkink.backend.vendor.config.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,12 +25,14 @@ public class PostController {
     private final PostService postService;
     private final VendorService vendorService;
     private final ImageService imageService;
+    private final Encryption encryption;
 
     @Autowired
-    public PostController(PostService postService, VendorService vendorService, ImageService imageService) {
+    public PostController(PostService postService, VendorService vendorService, ImageService imageService,Encryption encryption) {
         this.postService = postService;
         this.vendorService=vendorService;
         this.imageService=imageService;
+        this.encryption=encryption;
     }
 
     @GetMapping
@@ -59,12 +62,14 @@ public class PostController {
 
 
     @PostMapping(
-            path="/{vendorId}/add",
+            path="/{vendorId}/add/wAdmin/{password}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addPost(@PathVariable("vendorId") Long vendorId,
+    public ResponseEntity addPost(@PathVariable("password") String password,@PathVariable("vendorId") Long vendorId,
                                   @RequestParam("file")MultipartFile file) throws URISyntaxException {
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Vendor postOwner = vendorService.findByProfileId(vendorId);
         Post createdPost= postService.addPost(postOwner);
         if (postOwner == null) {
@@ -94,12 +99,14 @@ public class PostController {
     }
 
     @PutMapping(
-            path="/{postId}/add",
+            path="/{postId}/add/wAdmin/{password}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addImagesToPost(@PathVariable("postId") Long postId,
+    public ResponseEntity addImagesToPost(@PathVariable("password") String password,@PathVariable("postId") Long postId,
                                   @RequestParam("file")MultipartFile file) throws URISyntaxException {
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Post orgPost = postService.findByPostId(postId);
         Vendor vendor = orgPost.getVendor();
         if (orgPost == null) {
@@ -135,9 +142,11 @@ public class PostController {
     }
 
     @DeleteMapping(
-            path="/{postId}/remove"
+            path="/{postId}/remove/wAdmin/{password}"
     )
-    public ResponseEntity removeVendor(@PathVariable("postId") Long postId){
+    public ResponseEntity removeVendor(@PathVariable("password") String password,@PathVariable("postId") Long postId){
+        if(!encryption.checkAccess(password))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         long removedImages=imageService.deleteByPostId(postId);
         postService.deletePost(postId);
         return ResponseEntity.ok(removedImages);

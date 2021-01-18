@@ -2,6 +2,7 @@ package com.linkink.backend.vendor.services;
 
 import com.linkink.backend.data.entity.Vendor;
 import com.linkink.backend.data.projections.VendorView;
+import com.linkink.backend.vendor.config.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,13 @@ public class VendorController {
         this.vendorService = vendorService;
         this.postService = postService;
         this.imageService = imageService;
+    }
+
+    @GetMapping(
+            path="/adminAccess/{password}"
+    )
+    public ResponseEntity checkAdmin(@PathVariable("password") String password) {
+        return ResponseEntity.ok(Encryption.checkAccess(password));
     }
 
     @GetMapping

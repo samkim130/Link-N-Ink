@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 //https://stackoverflow.com/questions/32319396/cors-with-spring-boot-and-angularjs-not-working
 //@Configuration
 public class CorsConfig {
+    // will be used eventually
+
         //implements WebMvcConfigurer{
   /*
     @Override

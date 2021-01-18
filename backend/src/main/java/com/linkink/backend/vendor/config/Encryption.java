@@ -1,5 +1,7 @@
 package com.linkink.backend.vendor.config;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
@@ -15,6 +17,19 @@ public class Encryption {
     private static final int KEY_LENGTH = 512;
     private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
     private static final SecureRandom RAND = new SecureRandom();
+
+    @Value("${myAdminProperties.hashedPass}")
+    private String adminKey;
+    @Value("${myAdminProperties.salt}")
+    private String adminSalt;
+
+    public static boolean checkAccess(String password){
+        String salt= generateSalt(8).get();
+        String generatedHash = hashPassword(password,salt).get();
+        System.out.println(salt);
+        System.out.println(generatedHash);
+        return true;
+    }
 
     public static Optional<String> generateSalt (final int length) {
 

@@ -7,26 +7,34 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-
 @Configuration
-public class AmazonS3Config {
-    @Value("${amazonProperties.accessKey}")
-    private String keyId;
+public class MyConfig {
 
-    @Value("${amazonProperties.secretKey}")
-    private String key;
+    @Bean
+    @Profile("prod")
+    public Encryption encryption(){
+        ProdPropVarConfig prodPropVarConfig = new ProdPropVarConfig();
+        return new Encryption(prodPropVarConfig.getAdminKey(),prodPropVarConfig.getAdminSalt());
+    }
+
+    @Bean
+    @Profile("dev")
+    public Encryption devEncryption() throws FileNotFoundException {
+        String keys[]=readKey("./src/main/java/com/linkink/backend/config/admin.txt");
+        return new Encryption(keys[0],keys[1]);
+    }
 
     @Bean
     @Profile("prod")
     public AmazonS3 s3(){
-        AWSCredentials awsCredentials = new BasicAWSCredentials(keyId, key);
+        ProdPropVarConfig prodPropVarConfig = new ProdPropVarConfig();
+        AWSCredentials awsCredentials = new BasicAWSCredentials(prodPropVarConfig.getKeyId(), prodPropVarConfig.getKey());
 
         return AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .withRegion("us-east-2").build();
@@ -34,8 +42,8 @@ public class AmazonS3Config {
 
     @Bean
     @Profile("dev")
-    public AmazonS3 s3UsingTxt() throws FileNotFoundException {
-        String keys[]=readKey();
+    public AmazonS3 devS3() throws FileNotFoundException {
+        String keys[]=readKey("./src/main/java/com/linkink/backend/config/cred.txt");
         AWSCredentials awsCredentials = new BasicAWSCredentials(keys[0],keys[1]);
 
         return AmazonS3ClientBuilder
@@ -45,9 +53,9 @@ public class AmazonS3Config {
                 .build();
     }
 
-    public String[] readKey() throws FileNotFoundException {
+    public String[] readKey(String filePath) throws FileNotFoundException {
         //file omitted through gitignore
-        Scanner sc= new Scanner(new File("./src/main/java/com/linkink/backend/config/cred.txt"));
+        Scanner sc= new Scanner(new File(filePath));
         //fill in using this format
         //Scanner sc= new Scanner(new File("rootkey.csv"));
         String keys[] = new String[2];
@@ -61,5 +69,4 @@ public class AmazonS3Config {
 
         return keys;
     }
-
 }

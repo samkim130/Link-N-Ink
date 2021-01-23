@@ -1,9 +1,5 @@
 package com.linkink.backend.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Optional;
@@ -13,7 +9,6 @@ import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-@Configuration
 public class Encryption {
 
     private static final int ITERATIONS = 65536;
@@ -21,10 +16,13 @@ public class Encryption {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
     private static final SecureRandom RAND = new SecureRandom();
 
-    @Value("${myAdminProperties.hashedPass}")
-    private String adminKey;
-    @Value("${myAdminProperties.salt}")
-    private String adminSalt;
+    private final String adminKey;
+    private final String adminSalt;
+
+    public Encryption(String adminKey, String adminSalt) {
+        this.adminKey = adminKey;
+        this.adminSalt = adminSalt;
+    }
 
     public boolean checkAccess(String password){
         String generatedHash = hashPassword(password,adminSalt).get();

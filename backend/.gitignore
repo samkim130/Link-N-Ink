@@ -35,3 +35,4 @@ build/
 
 ### AWS Credentials ###
 src/main/java/com/linkink/backend/config/cred.txt
+src/main/java/com/linkink/backend/config/admin.txt

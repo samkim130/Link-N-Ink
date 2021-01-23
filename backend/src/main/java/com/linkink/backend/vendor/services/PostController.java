@@ -28,11 +28,11 @@ public class PostController {
     private final Encryption encryption;
 
     @Autowired
-    public PostController(PostService postService, VendorService vendorService, ImageService imageService,Encryption encryption) {
+    public PostController(PostService postService, VendorService vendorService, ImageService imageService, Encryption encryption) {
         this.postService = postService;
         this.vendorService=vendorService;
         this.imageService=imageService;
-        this.encryption=encryption;
+        this.encryption = encryption;
     }
 
     @GetMapping

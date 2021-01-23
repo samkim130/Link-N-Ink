@@ -25,11 +25,11 @@ public class VendorController {
     private final Encryption encryption;
 
     @Autowired
-    public VendorController(VendorService vendorService, PostService postService, ImageService imageService,Encryption encryption) {
+    public VendorController(VendorService vendorService, PostService postService, ImageService imageService, Encryption encryption) {
         this.vendorService = vendorService;
         this.postService = postService;
         this.imageService = imageService;
-        this.encryption=encryption;
+        this.encryption = encryption;
     }
 
     @GetMapping(

@@ -2,7 +2,7 @@ package com.linkink.backend.vendor.services;
 
 import com.linkink.backend.data.entity.Vendor;
 import com.linkink.backend.data.projections.VendorView;
-import com.linkink.backend.vendor.config.Encryption;
+import com.linkink.backend.config.Encryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,4 +1,4 @@
-package com.linkink.backend.vendor.config;
+package com.linkink.backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
